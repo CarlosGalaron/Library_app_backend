@@ -35,7 +35,20 @@ public class BookController {
 
     // Actualizar un libro (solo si pertenece al usuario)
     @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book, @RequestHeader("Firebase-Uid") String firebaseUid) {
+    public Book updateBook(@PathVariable Long id, @RequestBody Book book,
+            @RequestHeader("Firebase-Uid") String firebaseUid) {
         return bookService.updateBook(id, book, firebaseUid);
+    }
+
+    // Cambiar el estado de un libro
+    @PutMapping("/{id}/toggle-state")
+    public Book toggleBookState(@PathVariable Long id, @RequestHeader("Firebase-Uid") String firebaseUid) {
+        return bookService.toggleBookState(id, firebaseUid);
+    }
+
+    // Marcar/desmarcar como favorito
+    @PutMapping("/{id}/toggle-favorite")
+    public Book toggleFavorite(@PathVariable Long id, @RequestHeader("Firebase-Uid") String firebaseUid) {
+        return bookService.toggleFavorite(id, firebaseUid);
     }
 }

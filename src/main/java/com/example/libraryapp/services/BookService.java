@@ -61,4 +61,29 @@ public class BookService {
             throw new RuntimeException("Libro no encontrado o no pertenece al usuario");
         }
     }
+    // Cambiar el estado de un libro
+public Book toggleBookState(Long id, String firebaseUid) {
+    User user = userRepository.findByFirebaseUid(firebaseUid);
+    Optional<Book> optionalBook = bookRepository.findById(id);
+    if (optionalBook.isPresent() && optionalBook.get().getUser().equals(user)) {
+        Book book = optionalBook.get();
+        book.setState(book.getState().equals("pendiente") ? "leído" : "pendiente");
+        return bookRepository.save(book);
+    } else {
+        throw new RuntimeException("Libro no encontrado o no pertenece al usuario");
+    }
+}
+
+// Marcar/desmarcar como favorito
+public Book toggleFavorite(Long id, String firebaseUid) {
+    User user = userRepository.findByFirebaseUid(firebaseUid);
+    Optional<Book> optionalBook = bookRepository.findById(id);
+    if (optionalBook.isPresent() && optionalBook.get().getUser().equals(user)) {
+        Book book = optionalBook.get();
+        book.setFavourite(!book.isFavourite());
+        return bookRepository.save(book);
+    } else {
+        throw new RuntimeException("Libro no encontrado o no pertenece al usuario");
+    }
+}
 }
